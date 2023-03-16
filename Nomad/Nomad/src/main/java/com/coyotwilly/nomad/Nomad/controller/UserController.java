@@ -2,6 +2,7 @@ package com.coyotwilly.nomad.Nomad.controller;
 
 import com.coyotwilly.nomad.Nomad.model.User;
 import com.coyotwilly.nomad.Nomad.service.UserService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
@@ -26,5 +29,12 @@ public class UserController {
         Optional<User> user = userService.getUser(id);
         return user.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PostMapping("/user/sign-in")
+    ResponseEntity<User> addUser(@Valid @RequestBody User user) throws URISyntaxException {
+        logger.info("Request to add new User: " + user);
+        User res = userService.saveUser(user);
+        return ResponseEntity.created(new URI("/api/user/" + res.getId())).body(res);
     }
 }

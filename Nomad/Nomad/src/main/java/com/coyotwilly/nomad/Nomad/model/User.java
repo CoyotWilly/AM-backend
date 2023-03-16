@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Set;
+
 @Table(name = "Users")
 @Entity
 @Data
@@ -29,4 +31,8 @@ public class User {
     private String city;
     private String country;
     private LocalDate birthDate;
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Set<PastTrips> pastTrips;
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Set<FutureTrips> futureTrips;
 }
