@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
-        if ((user.getPassportNo().isEmpty()) || (user.getPin() == 0) || (user.getIdDocumentNo().isEmpty())){
+        if ((user.getPassportNo().isEmpty()) || (user.getPin() == 0) || (user.getDocumentNo().isEmpty())){
             System.err.println("saveUser fail due empty of required fields.");
             return null;
         }

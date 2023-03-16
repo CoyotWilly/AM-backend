@@ -17,7 +17,7 @@ class NomadApplicationTests {
 				.lastName("el Sharamn")
 				.pin(1234)
 				.passportNo("A9632B")
-				.idDocumentNo("A9632B")
+				.documentNo("A9632B")
 				.build();
 		userService.saveUser(user);
 		userService.getAllUsers().forEach(System.out::println);

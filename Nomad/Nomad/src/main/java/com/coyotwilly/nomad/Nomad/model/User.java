@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +22,7 @@ public class User {
     @NonNull
     private String passportNo;
     @NonNull
-    private String idDocumentNo;
+    private String documentNo;
     private String street;
     private String homeNo;
     private int apartmentNo;
