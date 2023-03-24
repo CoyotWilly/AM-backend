@@ -8,4 +8,7 @@ public interface UserService {
     User saveUser(User user);
     Optional<User> getUser(Long id);
     Iterable<User> getAllUsers();
+    Boolean canLogIn(User credentials);
+    Long lastUser(User user);
+    Optional<User> resetUserPassword(User user);
 }

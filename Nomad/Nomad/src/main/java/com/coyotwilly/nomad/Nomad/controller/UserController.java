@@ -30,11 +30,26 @@ public class UserController {
         return user.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
-    @PostMapping("/user/sign-in")
+    @PostMapping("user/passwordReset")
+    ResponseEntity<?> resetUserPassword(@RequestBody User user){
+        logger.info("Password reset: " + user);
+        Optional<User> userFromRepo = userService.resetUserPassword(user);
+        return userFromRepo.map(response -> ResponseEntity.ok().body(userFromRepo)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+    @PostMapping("/matchingUserId")
+    Long getLastAddedUser(@RequestBody User loginParams) {
+        return userService.lastUser(loginParams);
+    }
+    @PostMapping("/user/login")
+    Boolean getUserLoginCredential(@RequestBody User loginParams) {
+        logger.info("Verification request with credentials: " + loginParams);
+        return userService.canLogIn(loginParams);
+    }
+    @PostMapping("/user/sign-up")
     ResponseEntity<User> addUser(@Valid @RequestBody User user) throws URISyntaxException {
         logger.info("Request to add new User: " + user);
         User res = userService.saveUser(user);
         return ResponseEntity.created(new URI("/api/user/" + res.getId())).body(res);
     }
+
 }

@@ -10,4 +10,5 @@ public interface UserRepo extends CrudRepository<User, Long> {
     User findByPin(int pin);
     User findByDocumentNo(String document);
     User findByPassportNo(String passport);
+    User findByEmailAddress(String emailAddress);
 }

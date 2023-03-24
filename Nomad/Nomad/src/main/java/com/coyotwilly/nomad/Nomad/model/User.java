@@ -3,7 +3,6 @@ package com.coyotwilly.nomad.Nomad.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 @Table(name = "Users")
@@ -19,6 +18,10 @@ public class User {
     private Long id;
     @NonNull
     private int pin;
+    private String login;
+    @NonNull
+    private String emailAddress;
+    private String password;
     private String firstName;
     private String lastName;
     @NonNull
@@ -30,7 +33,7 @@ public class User {
     private int apartmentNo;
     private String city;
     private String country;
-    private LocalDate birthDate;
+
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<PastTrips> pastTrips;
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)

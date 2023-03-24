@@ -1,5 +1,6 @@
 package com.coyotwilly.nomad.Nomad.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class FutureTrips {
     private LocalDate startDate;
     private LocalDate endDate;
     private String destination;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.PERSIST)
     private Set<ToDoList> reminderList;
 }
