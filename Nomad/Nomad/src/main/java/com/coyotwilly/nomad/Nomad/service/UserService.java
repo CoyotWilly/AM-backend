@@ -11,4 +11,5 @@ public interface UserService {
     Boolean canLogIn(User credentials);
     Long lastUser(User user);
     Optional<User> resetUserPassword(User user);
+    Boolean deleteUser(Long id);
 }

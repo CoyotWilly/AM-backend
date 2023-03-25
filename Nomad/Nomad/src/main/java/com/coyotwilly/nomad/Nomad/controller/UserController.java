@@ -52,4 +52,13 @@ public class UserController {
         return ResponseEntity.created(new URI("/api/user/" + res.getId())).body(res);
     }
 
+    @DeleteMapping("/user/{id}")
+    ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        if (userService.deleteUser(id)){
+            return ResponseEntity.ok().body("User with ID="+ id + " has been removed");
+        }
+        return ResponseEntity.badRequest().body("Attempt to remove User with ID=" + id + "has failed");
+    }
+
+
 }
