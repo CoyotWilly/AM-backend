@@ -1,11 +1,14 @@
 package com.coyotwilly.nomad.Nomad.service.Implementation;
 
+import com.coyotwilly.nomad.Nomad.model.FutureTrips;
 import com.coyotwilly.nomad.Nomad.model.User;
+import com.coyotwilly.nomad.Nomad.repository.ImageRepo;
 import com.coyotwilly.nomad.Nomad.repository.UserRepo;
 import com.coyotwilly.nomad.Nomad.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -13,6 +16,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private ImageRepo imageRepo;
 
     @Override
     public Boolean canLogIn(User credentials) {
@@ -31,6 +36,27 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         return userRepo.save(user);
+    }
+
+    @Override
+    public Optional<FutureTrips> addTrip(Long id, FutureTrips futureTrips) {
+        Optional<User> user = userRepo.findById(id);
+        if (user.isPresent()) {
+            // New trip object
+            futureTrips.setImgBackground(imageRepo.findByUserId(id));
+
+            // Current trips connected with given userId
+            List<FutureTrips> trips = user.get().getFutureTrips();
+            trips.add(futureTrips);
+
+            // saving value to repository
+            user.get().setFutureTrips(trips);
+            userRepo.save(user.get());
+            // TODO:
+            //  -> FIND AND FIX WHY IS LINE ABOVE INSERTING NULLS IN AN OBJECT FUTURE TRIPS
+            return Optional.of(user.get().getFutureTrips().get(0));
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -60,5 +86,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Iterable<User> getAllUsers() {
         return userRepo.findAll();
+    }
+
+    @Override
+    public Iterable<FutureTrips> getAllFutureTrips(Long id) {
+        Optional<User> user = userRepo.findById(id);
+        return user.<Iterable<FutureTrips>>map(User::getFutureTrips).orElse(null);
     }
 }

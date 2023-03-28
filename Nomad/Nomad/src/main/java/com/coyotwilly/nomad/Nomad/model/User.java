@@ -3,7 +3,7 @@ package com.coyotwilly.nomad.Nomad.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
 @Table(name = "Users")
 @Entity
@@ -35,7 +35,7 @@ public class User {
     private String country;
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private Set<PastTrips> pastTrips;
+    private List<PastTrips> pastTrips;
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private Set<FutureTrips> futureTrips;
+    private List<FutureTrips> futureTrips;
 }

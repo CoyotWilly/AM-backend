@@ -1,11 +1,13 @@
 package com.coyotwilly.nomad.Nomad.controller;
 
+import com.coyotwilly.nomad.Nomad.model.FutureTrips;
 import com.coyotwilly.nomad.Nomad.model.User;
 import com.coyotwilly.nomad.Nomad.service.UserService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRange;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,16 @@ public class UserController {
         Optional<User> user = userService.getUser(id);
         return user.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+    @GetMapping("user/{id}/get-all-trips")
+    Iterable<FutureTrips> getAllTrips(@PathVariable Long id) {
+        return userService.getAllFutureTrips(id);
+    }
+    @PostMapping("/user/{id}/add-trip")
+    public ResponseEntity<?> addFutureTrip(@PathVariable Long id, @RequestBody FutureTrips futureTrips){
+        logger.info("Attempt to create new FUTURE TRIP");
+        Optional<FutureTrips> resp = userService.addTrip(id, futureTrips);
+        return resp.map(response -> ResponseEntity.ok().body(resp)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     @PostMapping("user/passwordReset")
     ResponseEntity<?> resetUserPassword(@RequestBody User user){
