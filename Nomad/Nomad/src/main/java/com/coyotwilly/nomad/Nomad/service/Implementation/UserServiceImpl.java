@@ -5,7 +5,6 @@ import com.coyotwilly.nomad.Nomad.model.User;
 import com.coyotwilly.nomad.Nomad.repository.ImageRepo;
 import com.coyotwilly.nomad.Nomad.repository.UserRepo;
 import com.coyotwilly.nomad.Nomad.service.UserService;
-import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
