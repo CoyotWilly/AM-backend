@@ -10,9 +10,6 @@
         <module name="Nomad" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Nomad" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

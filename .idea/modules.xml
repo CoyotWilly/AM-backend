@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/AM_backend.iml" filepath="$PROJECT_DIR$/.idea/AM_backend.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Nomad/Nomad/Nomad.iml" filepath="$PROJECT_DIR$/Nomad/Nomad/Nomad.iml" />
     </modules>
   </component>
 </project>
