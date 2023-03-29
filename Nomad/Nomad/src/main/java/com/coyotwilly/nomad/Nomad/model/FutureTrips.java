@@ -17,6 +17,7 @@ public class FutureTrips {
     private String startDate;
     private String endDate;
     private String destination;
+
     @OneToOne(cascade = CascadeType.PERSIST)
     private Image imgBackground;
 }

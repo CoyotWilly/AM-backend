@@ -5,6 +5,7 @@ import com.coyotwilly.nomad.Nomad.model.User;
 import com.coyotwilly.nomad.Nomad.repository.ImageRepo;
 import com.coyotwilly.nomad.Nomad.repository.UserRepo;
 import com.coyotwilly.nomad.Nomad.service.UserService;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<FutureTrips> addTrip(Long id, FutureTrips futureTrips) {
+    public Optional<List<FutureTrips>> addTrip(Long id, FutureTrips futureTrips) {
         Optional<User> user = userRepo.findById(id);
         if (user.isPresent()) {
             // New trip object
@@ -52,9 +53,7 @@ public class UserServiceImpl implements UserService {
             // saving value to repository
             user.get().setFutureTrips(trips);
             userRepo.save(user.get());
-            // TODO:
-            //  -> FIND AND FIX WHY IS LINE ABOVE INSERTING NULLS IN AN OBJECT FUTURE TRIPS
-            return Optional.of(user.get().getFutureTrips().get(0));
+            return Optional.of(user.get().getFutureTrips());
         }
         return Optional.empty();
     }

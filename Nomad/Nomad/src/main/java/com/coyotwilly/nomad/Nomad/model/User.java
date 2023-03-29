@@ -11,13 +11,13 @@ import java.util.List;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NonNull
-    private int pin;
+    private Integer pin;
     private String login;
     @NonNull
     private String emailAddress;
@@ -36,6 +36,7 @@ public class User {
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<PastTrips> pastTrips;
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private List<FutureTrips> futureTrips;
 }

@@ -15,6 +15,7 @@ class NomadApplicationTests {
 		User user = User.builder()
 				.firstName("Abdul")
 				.lastName("el Sharamn")
+				.emailAddress("aaa@bb.com")
 				.pin(1234)
 				.passportNo("A9632B")
 				.documentNo("A9632B")

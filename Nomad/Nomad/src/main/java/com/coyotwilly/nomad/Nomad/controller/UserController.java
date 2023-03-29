@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -39,7 +40,7 @@ public class UserController {
     @PostMapping("/user/{id}/add-trip")
     public ResponseEntity<?> addFutureTrip(@PathVariable Long id, @RequestBody FutureTrips futureTrips){
         logger.info("Attempt to create new FUTURE TRIP");
-        Optional<FutureTrips> resp = userService.addTrip(id, futureTrips);
+        Optional<List<FutureTrips>> resp = userService.addTrip(id, futureTrips);
         return resp.map(response -> ResponseEntity.ok().body(resp)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     @PostMapping("user/passwordReset")
