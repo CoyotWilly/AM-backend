@@ -1,9 +1,6 @@
 package com.coyotwilly.nomad.Nomad.service.Implementation;
 
-import com.coyotwilly.nomad.Nomad.model.ActiveTrips;
-import com.coyotwilly.nomad.Nomad.model.FutureTrips;
-import com.coyotwilly.nomad.Nomad.model.PastTrips;
-import com.coyotwilly.nomad.Nomad.model.User;
+import com.coyotwilly.nomad.Nomad.model.*;
 import com.coyotwilly.nomad.Nomad.repository.ImageRepo;
 import com.coyotwilly.nomad.Nomad.repository.UserRepo;
 import com.coyotwilly.nomad.Nomad.service.UserService;
@@ -44,14 +41,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<List<ActiveTrips>> moveToActive() {
-        Optional<User> user = userRepo.findById(1L);
-//        LocalDate endDate = LocalDate.parse(trip.getEndDate());
-        if (user.isPresent()) {
+    public ResponseEntity<String> moveToActive() {
+        for (User user: userRepo.findAll()) {
             List<FutureTrips> itemsMoved = new ArrayList<>();
-            for (FutureTrips trip : user.get().getFutureTrips()) {
+            for (FutureTrips trip : user.getFutureTrips()) {
                 LocalDate startDate = LocalDate.parse(trip.getStartDate());
                 if (LocalDate.now().isEqual(startDate)) {
+
                     //Manual cast from FutureTrip to ActiveTrip type
                     ActiveTrips newTrip = new ActiveTrips();
                     newTrip.setStartDate(trip.getStartDate());
@@ -60,8 +56,7 @@ public class UserServiceImpl implements UserService {
                     newTrip.setImgBackground(trip.getImgBackground());
 
                     // new ActiveTrip emplacement
-                    List<ActiveTrips> activeTrips = user.get().getActiveTrips();
-                    activeTrips.add(newTrip);
+                    user.getActiveTrips().add(newTrip);
 
                     // add item to be removed
                     itemsMoved.add(trip);
@@ -70,13 +65,38 @@ public class UserServiceImpl implements UserService {
             // remove items from List
             if ( itemsMoved.size() != 0) {
                 for (FutureTrips tripToRemove : itemsMoved ) {
-                    user.get().getFutureTrips().remove(tripToRemove);
+                    user.getFutureTrips().remove(tripToRemove);
                 }
             }
-            userRepo.save(user.get());
-            return Optional.of(user.get().getActiveTrips());
+            List<ActiveTrips> activeTripsMoved = new ArrayList<>();
+            // move Active that expired to Past
+            for (ActiveTrips expiredTrip : user.getActiveTrips()) {
+                LocalDate endDate = LocalDate.parse(expiredTrip.getEndDate());
+                if (LocalDate.now().isAfter(endDate)) {
+                    PastTrips newTrip = new PastTrips();
+                    newTrip.setStartDate(expiredTrip.getStartDate());
+                    newTrip.setEndDate(expiredTrip.getEndDate());
+                    newTrip.setDestination(expiredTrip.getDestination());
+
+                    // image transfer
+                    List<Image> memo = new ArrayList<>();
+                    memo.add(expiredTrip.getImgBackground());
+                    newTrip.setMemoriesCollection(memo);
+
+                    // new PastTrip emplacement
+                    user.getPastTrips().add(newTrip);
+                    activeTripsMoved.add(expiredTrip);
+                }
+            }
+            // remove items from List
+            if ( activeTripsMoved.size() != 0) {
+                for (ActiveTrips tripToRemove : activeTripsMoved ) {
+                    user.getActiveTrips().remove(tripToRemove);
+                }
+            }
+            userRepo.save(user);
         }
-        return Optional.empty();
+        return ResponseEntity.ok().body("Transition of trip holders ended SUCCESSFULLY");
     }
 
     @Override

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -42,15 +43,13 @@ public class UserController {
         Optional<List<FutureTrips>> resp = userService.addTrip(id, futureTrips);
         return resp.map(response -> ResponseEntity.ok().body(resp)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-    @PostMapping("/user/trips/move")
+    @Scheduled(cron = "0 0 0 * * *")
     public ResponseEntity<?> moveToActive() {
-        return ResponseEntity.ok().body(userService.moveToActive());
+        ResponseEntity<String> response = userService.moveToActive();
+        logger.info("SCHEDULED TASK: " + response);
+        return ResponseEntity.ok().body(response);
     }
 
-//    @PostMapping("user/active-trip/move")
-//    public ResponseEntity<?> moveToPast() {
-//        return ResponseEntity.ok().body("");
-//    }
     @PostMapping("user/passwordReset")
     ResponseEntity<?> resetUserPassword(@RequestBody User user){
         logger.info("Password reset: " + user);
