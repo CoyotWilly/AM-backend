@@ -42,6 +42,15 @@ public class UserController {
         Optional<List<FutureTrips>> resp = userService.addTrip(id, futureTrips);
         return resp.map(response -> ResponseEntity.ok().body(resp)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+    @PostMapping("/user/trips/move")
+    public ResponseEntity<?> moveToActive() {
+        return ResponseEntity.ok().body(userService.moveToActive());
+    }
+
+//    @PostMapping("user/active-trip/move")
+//    public ResponseEntity<?> moveToPast() {
+//        return ResponseEntity.ok().body("");
+//    }
     @PostMapping("user/passwordReset")
     ResponseEntity<?> resetUserPassword(@RequestBody User user){
         logger.info("Password reset: " + user);

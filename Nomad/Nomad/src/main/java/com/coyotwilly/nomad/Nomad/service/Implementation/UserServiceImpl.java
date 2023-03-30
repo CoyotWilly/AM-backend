@@ -1,13 +1,18 @@
 package com.coyotwilly.nomad.Nomad.service.Implementation;
 
+import com.coyotwilly.nomad.Nomad.model.ActiveTrips;
 import com.coyotwilly.nomad.Nomad.model.FutureTrips;
+import com.coyotwilly.nomad.Nomad.model.PastTrips;
 import com.coyotwilly.nomad.Nomad.model.User;
 import com.coyotwilly.nomad.Nomad.repository.ImageRepo;
 import com.coyotwilly.nomad.Nomad.repository.UserRepo;
 import com.coyotwilly.nomad.Nomad.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,6 +41,42 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         return userRepo.save(user);
+    }
+
+    @Override
+    public Optional<List<ActiveTrips>> moveToActive() {
+        Optional<User> user = userRepo.findById(1L);
+//        LocalDate endDate = LocalDate.parse(trip.getEndDate());
+        if (user.isPresent()) {
+            List<FutureTrips> itemsMoved = new ArrayList<>();
+            for (FutureTrips trip : user.get().getFutureTrips()) {
+                LocalDate startDate = LocalDate.parse(trip.getStartDate());
+                if (LocalDate.now().isEqual(startDate)) {
+                    //Manual cast from FutureTrip to ActiveTrip type
+                    ActiveTrips newTrip = new ActiveTrips();
+                    newTrip.setStartDate(trip.getStartDate());
+                    newTrip.setEndDate(trip.getEndDate());
+                    newTrip.setDestination(trip.getDestination());
+                    newTrip.setImgBackground(trip.getImgBackground());
+
+                    // new ActiveTrip emplacement
+                    List<ActiveTrips> activeTrips = user.get().getActiveTrips();
+                    activeTrips.add(newTrip);
+
+                    // add item to be removed
+                    itemsMoved.add(trip);
+                }
+            }
+            // remove items from List
+            if ( itemsMoved.size() != 0) {
+                for (FutureTrips tripToRemove : itemsMoved ) {
+                    user.get().getFutureTrips().remove(tripToRemove);
+                }
+            }
+            userRepo.save(user.get());
+            return Optional.of(user.get().getActiveTrips());
+        }
+        return Optional.empty();
     }
 
     @Override

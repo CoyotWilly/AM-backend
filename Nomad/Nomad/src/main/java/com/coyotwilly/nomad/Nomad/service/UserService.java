@@ -1,5 +1,6 @@
 package com.coyotwilly.nomad.Nomad.service;
 
+import com.coyotwilly.nomad.Nomad.model.ActiveTrips;
 import com.coyotwilly.nomad.Nomad.model.FutureTrips;
 import com.coyotwilly.nomad.Nomad.model.User;
 
@@ -9,6 +10,7 @@ import java.util.Optional;
 public interface UserService {
     User saveUser(User user);
     Optional<List<FutureTrips>> addTrip(Long id, FutureTrips futureTrips);
+    Optional<List<ActiveTrips>> moveToActive();
     Optional<User> getUser(Long id);
     Iterable<User> getAllUsers();
     Iterable<FutureTrips> getAllFutureTrips(Long id);

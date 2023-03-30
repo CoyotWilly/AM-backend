@@ -4,13 +4,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-@Table(name = "upcoming_trips")
+@Table(name = "active_trips")
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FutureTrips {
+public class ActiveTrips {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,6 +17,6 @@ public class FutureTrips {
     private String endDate;
     private String destination;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     private Image imgBackground;
 }

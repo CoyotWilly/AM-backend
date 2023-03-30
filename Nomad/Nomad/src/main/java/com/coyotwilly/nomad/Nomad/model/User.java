@@ -34,7 +34,10 @@ public class User {
     private String city;
     private String country;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private List<ActiveTrips> activeTrips;
+
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private List<PastTrips> pastTrips;
 
     @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
