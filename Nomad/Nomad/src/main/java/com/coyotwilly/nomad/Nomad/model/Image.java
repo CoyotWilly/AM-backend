@@ -1,5 +1,6 @@
 package com.coyotwilly.nomad.Nomad.model;
 
+import com.fasterxml.jackson.databind.ser.std.ByteArraySerializer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +11,7 @@ import lombok.NonNull;
 @Entity
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

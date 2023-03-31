@@ -152,4 +152,16 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepo.findById(id);
         return user.<Iterable<FutureTrips>>map(User::getFutureTrips).orElse(null);
     }
+
+    @Override
+    public Iterable<ActiveTrips> getAllActiveTrips(Long id) {
+        Optional<User> user = userRepo.findById(id);
+        return user.<Iterable<ActiveTrips>>map(User::getActiveTrips).orElse(null);
+    }
+
+    @Override
+    public Iterable<PastTrips> getAllPastTrips(Long id) {
+        Optional<User> user = userRepo.findById(id);
+        return user.<Iterable<PastTrips>>map(User::getPastTrips).orElse(null);
+    }
 }

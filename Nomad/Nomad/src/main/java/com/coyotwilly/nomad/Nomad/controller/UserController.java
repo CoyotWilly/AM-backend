@@ -1,6 +1,8 @@
 package com.coyotwilly.nomad.Nomad.controller;
 
+import com.coyotwilly.nomad.Nomad.model.ActiveTrips;
 import com.coyotwilly.nomad.Nomad.model.FutureTrips;
+import com.coyotwilly.nomad.Nomad.model.PastTrips;
 import com.coyotwilly.nomad.Nomad.model.User;
 import com.coyotwilly.nomad.Nomad.service.UserService;
 import jakarta.validation.Valid;
@@ -33,10 +35,21 @@ public class UserController {
         return user.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-    @GetMapping("user/{id}/get-all-trips")
+    @GetMapping("/user/{id}/get-all-trips")
     Iterable<FutureTrips> getAllTrips(@PathVariable Long id) {
         return userService.getAllFutureTrips(id);
     }
+
+    @GetMapping("/user/{id}/get-all-active-trips")
+    Iterable<ActiveTrips> getAllActiveTrips(@PathVariable Long id) {
+        return userService.getAllActiveTrips(id);
+    }
+
+    @GetMapping("/user/{id}/get-all-past-trips")
+    Iterable<PastTrips> getAllPastTrips (@PathVariable Long id) {
+        return userService.getAllPastTrips(id);
+    }
+
     @PostMapping("/user/{id}/add-trip")
     public ResponseEntity<?> addFutureTrip(@PathVariable Long id, @RequestBody FutureTrips futureTrips){
         logger.info("Attempt to create new FUTURE TRIP");
