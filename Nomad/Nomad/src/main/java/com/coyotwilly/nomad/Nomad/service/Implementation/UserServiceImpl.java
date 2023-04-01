@@ -100,11 +100,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<List<FutureTrips>> addTrip(Long id, FutureTrips futureTrips) {
+    public Optional<List<FutureTrips>> addTrip(Long id, Long imgId, FutureTrips futureTrips) {
         Optional<User> user = userRepo.findById(id);
         if (user.isPresent()) {
+            Optional<Image> img = imageRepo.findById(imgId);
             // New trip object
-            futureTrips.setImgBackground(imageRepo.findByUserId(id));
+            img.ifPresent(futureTrips::setImgBackground);
 
             // Current trips connected with given userId
             List<FutureTrips> trips = user.get().getFutureTrips();
@@ -156,6 +157,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Iterable<ActiveTrips> getAllActiveTrips(Long id) {
         Optional<User> user = userRepo.findById(id);
+
         return user.<Iterable<ActiveTrips>>map(User::getActiveTrips).orElse(null);
     }
 

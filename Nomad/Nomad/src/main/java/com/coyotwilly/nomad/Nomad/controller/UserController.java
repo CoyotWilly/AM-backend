@@ -50,10 +50,10 @@ public class UserController {
         return userService.getAllPastTrips(id);
     }
 
-    @PostMapping("/user/{id}/add-trip")
-    public ResponseEntity<?> addFutureTrip(@PathVariable Long id, @RequestBody FutureTrips futureTrips){
+    @PostMapping("/user/{id}/add-trip/{imgId}")
+    public ResponseEntity<?> addFutureTrip(@PathVariable Long id,@PathVariable Long imgId, @RequestBody FutureTrips futureTrips){
         logger.info("Attempt to create new FUTURE TRIP");
-        Optional<List<FutureTrips>> resp = userService.addTrip(id, futureTrips);
+        Optional<List<FutureTrips>> resp = userService.addTrip(id, imgId, futureTrips);
         return resp.map(response -> ResponseEntity.ok().body(resp)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     @Scheduled(cron = "0 0 0 * * *")

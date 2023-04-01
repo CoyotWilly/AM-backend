@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface UserService {
     User saveUser(User user);
-    Optional<List<FutureTrips>> addTrip(Long id, FutureTrips futureTrips);
+    Optional<List<FutureTrips>> addTrip(Long id,Long imgId, FutureTrips futureTrips);
     ResponseEntity<String> moveToActive();
     Optional<User> getUser(Long id);
     Iterable<User> getAllUsers();
