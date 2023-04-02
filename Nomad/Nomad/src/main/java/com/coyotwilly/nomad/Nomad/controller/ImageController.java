@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.attribute.standard.Media;
 import java.io.IOException;
 import java.util.List;
 
@@ -25,6 +26,10 @@ public class ImageController{
     public byte[] getImage(@PathVariable Long id){
         logger.info("GET request for image with ID=" + id);
         return imageService.getBackgroundImg(id);
+    }
+    @GetMapping("/get/all")
+    public Iterable<Image> getAllImages() {
+        return imageService.getAllImg();
     }
     @PostMapping("/add/{userId}")
     public Long postBackgroundImage(@RequestParam @NonNull MultipartFile image, @PathVariable Long userId) throws IOException {

@@ -24,6 +24,17 @@ public class ImageImpl implements ImageService {
     }
 
     @Override
+    public Iterable<Image> getAllImg() {
+        List<Image> imageList = new ArrayList<>();
+        for (Long i = imageRepo.count(); i > imageRepo.count() - 5; i--){
+            if (imageRepo.findById(i).isPresent()){
+                imageList.add(imageRepo.findById(i).get());
+            }
+        }
+        return imageList;
+    }
+
+    @Override
     public List<Long> addSeveralImg(MultipartFile[] images, Long userId) throws IOException{
         List<Long> savedId = new ArrayList<>();
         for (MultipartFile file : images) {
